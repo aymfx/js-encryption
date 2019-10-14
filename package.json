@@ -1,0 +1,40 @@
+{
+  "name": "glup-enncryption",
+  "version": "0.0.2",
+  "description": "加密js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aymfx/js-encryption.git"
+  },
+  "keywords": [
+    "Confusion",
+    "Chinese",
+    "Unicode",
+    "Hex",
+    "Encryption"
+  ],
+  "gulpplugin": "",
+  "author": "aymfx",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aymfx/js-encryption/issues"
+  },
+  "homepage": "https://github.com/aymfx/js-encryption#readme",
+  "devDependencies": {
+    "confusion": "^0.1.1",
+    "escodegen": "^1.12.0",
+    "esprima": "^4.0.1",
+    "gulp": "^4.0.2",
+    "gulp-util": "^3.0.8",
+    "preprocess": "^3.1.0",
+    "through2": "^3.0.1"
+  },
+  "dependencies": {
+    "esprima": "^4.0.1",
+    "estraverse": "^4.3.0"
+  }
+}
