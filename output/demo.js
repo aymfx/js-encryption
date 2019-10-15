@@ -1,4 +1,4 @@
-var _x32484 = ['log'];
+var _x526 = ['log'];
 function app() {
-    console[_x32484[0]](12199999921);
+    console[_x526[0]](12199999921);
 }
