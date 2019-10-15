@@ -1,3 +1,7 @@
-function app() {
-    console.log(12199999921)
+var s = 12;
+
+function app(arg) {
+    console.log(12199999921, arg)
 }
+
+app(0)

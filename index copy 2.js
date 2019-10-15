@@ -4,7 +4,8 @@
 'use strict';
 const gutil = require('gulp-util'); //按照gulp的统一规范打印错误日志
 const through = require('through2'); //Node Stream的简单封装，目的是让链式流操作更加简单
-const parse = require('esprima').parse; //将js转成ast
+const esprima = require('esprima') //将js转成ast
+const parse = esprima.parse; //将js转成ast
 const toString = require('escodegen').generate; //将ast转成js
 const replace = require('estraverse').replace; //遍历ast
 const builders = require('ast-types').builders;
@@ -38,7 +39,7 @@ function isPropertyAccess(node) {
 }
 
 function isFnPropertyAccess(node) {
-    return node.type === 'FunctionDeclaration';
+    return node.type === 'FunctionDeclaration' && !node.computed;
 }
 
 function isPropertyKey(node, parent) {
@@ -74,7 +75,14 @@ function prependMap(body, stringMapName, stringMap) {
 
 
 function createVariableName(variableNames) { //创建一个数组的名字
-    debugger
+    var name = '_x';
+    do {
+        name += (Math.random() * 0xffff) | 0;
+    } while (variableNames.indexOf(name) !== -1);
+    return name;
+};
+
+function createVariableName(variableNames) { //创建一个数组的名字
     var name = '_x';
     do {
         name += (Math.random() * 0xffff) | 0;
@@ -83,54 +91,44 @@ function createVariableName(variableNames) { //创建一个数组的名字
 };
 
 function transformAst(ast, createVariableName) {
+    var _privateName = '_ox' + (Math.random() * 0xffff) | 0;
     var usedVariables = {};
     var exposesVariables = false;
     var strings = [];
     var stringIndexes = Object.create(null);
     var stringMapIdentifier = identifier('');
+    let num = 0
 
     function addString(string) {
         if (!(string in stringIndexes)) {
-            stringIndexes[string] = strings.push(string) - 1;
+            stringIndexes[string] = {
+                index: num++,
+                value: string
+            }
+            return stringIndexes.index
         }
-        return stringIndexes[string];
+        return stringIndexes.index;
     }
-    let num = 0
     replace(ast, {
         enter: function (node, parent) {
-            // console.log(node, num++)
-            var index;
-            if (node.type === 'VariableDeclaration' || node.type === 'FunctionDeclaration') { //FunctionDeclaration(函数定义)或者VariableDeclaration 进来 
-                if (!exposesVariables) {
-                    exposesVariables = !this.parents().some(isFunction);
-                } //判断是函数还是变量 
-            } else if (node.type === 'Identifier') {
-                usedVariables[node.name] = true;
-                // console.log(node.name)
-            } else if (isStringLiteral(node) && !isPropertyKey(node, parent) && node.value !== 'use strict') {
-                index = addString(node.value);
-                // console.log(node.value, '我的啥')
-                return memberExpression(stringMapIdentifier, literal(index), true);
-            } else if (isPropertyAccess(node)) {
-                node.computed = true
-                index = addString(node.property.name); //这里处理的是对象的属性
-                // console.log(node.property.name) // log
-                return memberExpression(node.object,
-                    memberExpression(stringMapIdentifier, literal(index), true), true);
-            } else if (isFnPropertyAccess(node)) { //处理函数的名字
-                index = addString(node.id.name); //这里处理的是对象的属性
-
-            }
+            // if () {}
         },
         leave: function (node, parent) {
 
+            if (node.type === esprima.Syntax.MemberExpression) { //修改属性提取
+                console.log(node)
+                let index = addString(node.property.name);
+                node.computed = true
+                node.property = {
+                    type: "Identifier",
+                    name: `${_privateName}[${index}]`
+                }
+                return node
+            }
         }
     });
-    // console.log(Object.keys(usedVariables))
-    stringMapIdentifier.name = createVariableName(Object.keys(usedVariables));
-    console.log(exposesVariables)
-    var insertMap = false ? prependMap : wrapWithIife;
-    ast.body = insertMap(ast.body, stringMapIdentifier, arrayExpression(strings.map(literal)));
+    stringMapIdentifier.name = _privateName;
+    ast.body = prependMap(ast.body, stringMapIdentifier, arrayExpression(strings.map(literal)))
 
     return ast;
 };
