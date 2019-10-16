@@ -6,12 +6,9 @@ const toString = require('escodegen').generate; //将ast转成js
 const replace = require('estraverse').replace; //遍历ast
 const builders = require('ast-types').builders;
 const PLUGIN_NAME = 'glup-enncryption';
-let code = `var s = 12;
-function app(arg) {
-    console.log(12199999921, arg)
-}
-app(0)`
-
+let code = `console.log('1212');var a={'v':'sdsd'}`
+console.log(code)
+console.log('----------------------分割线-------------------')
 //-----------------------分割线------------------
 
 //类型
@@ -54,7 +51,6 @@ function isStrictStatement(statement) {
 }
 
 function wrapWithIife(body, stringMapName, stringMap) {
-    console.log(body)
     debugger
     var wrapperFunctionBody = blockStatement(body);
     var wrapperFunction = functionExpression(null, [stringMapName], wrapperFunctionBody);
@@ -108,24 +104,24 @@ function transformAst(ast, createVariableName) {
                 // return functionExpression(null, literal(index), wrapperFunctionBody);
             } else if (node.type === 'Identifier') {
                 usedVariables[node.name] = true; //获取 所有的标志位 保证不会重复命名
-            } else if (isStringLiteral(node) && !isPropertyKey(node, parent) && node.value !== 'use strict') {
-                index = addString(node.value);
-                // console.log(node.value, '我的啥')
-                return memberExpression(stringMapIdentifier, literal(index), true);
-            } else if (isPropertyAccess(node)) {
+            } else if (isPropertyAccess(node.type)) {
                 node.computed = true
                 index = addString(node.property.name); //这里处理的是对象的属性
                 // console.log(node.property.name) // log
                 // debugger
-                return memberExpression(node.object,
+                var s = memberExpression(stringMapIdentifier, literal(index), true)
+                debugger
+                // console.log(s)
+                var r = memberExpression(node.object,
                     memberExpression(stringMapIdentifier, literal(index), true), true);
+                debugger
+                return r
             }
         },
         leave: function (node, parent) {
 
         }
     });
-    // console.log(Object.keys(usedVariables))
     stringMapIdentifier.name = createVariableName(Object.keys(usedVariables));
     debugger
     ast.body = prependMap(ast.body, stringMapIdentifier, arrayExpression(strings.map(literal)));
@@ -137,7 +133,6 @@ function transformAst(ast, createVariableName) {
 const strTohex = function (sourceCode, options) {
     let ast = parse(sourceCode);
     let obfuscated = transformAst(ast, createVariableName);
-    // console.log(obfuscated.body[0])
     let str = toString(obfuscated)
     //提取第一行的参数
     return str;
