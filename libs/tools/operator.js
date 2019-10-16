@@ -12,11 +12,13 @@ const {
 //在js文件最前面插入数组
 function prependMap(body, stringMapName, stringMap) {
     var insertIndex = isStrictStatement(body[0]) ? 1 : 0;
-    body.splice(insertIndex, 0,
-        variableDeclaration('var', [
-            variableDeclarator(stringMapName, stringMap)
-        ])
-    );
+    if (stringMap.elements.length > 0) {
+        body.splice(insertIndex, 0,
+            variableDeclaration('var', [
+                variableDeclarator(stringMapName, stringMap)
+            ])
+        );
+    }
     return body;
 }
 

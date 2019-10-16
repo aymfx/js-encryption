@@ -9,7 +9,6 @@ const {
 // const test = require('glup-enncryption');
 const test = require('./app.js');
 
-
 function testTask() {
     return src('example/demo.js')
         .pipe(test())

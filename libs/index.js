@@ -63,3 +63,9 @@ function strToHex(str) {
 module.exports = {
     strToHex
 }
+
+// ------ test ----------------
+let code = `var a = 2`
+
+let s = strToHex(code)
+console.log(s)
