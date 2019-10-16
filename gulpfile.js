@@ -6,7 +6,8 @@ const {
     parallel
 } = require('gulp');
 
-const test = require('./index.js');
+// const test = require('glup-enncryption');
+const test = require('./app.js');
 
 
 function testTask() {

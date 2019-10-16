@@ -1,10 +1,10 @@
-var _x58403 = [
+var _x47755 = [
     'log',
     'xxx'
 ];
-console[_x58403[0]](12121);
+console[_x47755[0]](12121);
 var a = 12;
 function app(sss) {
-    console[_x58403[0]](_x58403[1], sss);
+    console[_x47755[0]](_x47755[1], sss);
 }
 app(sss);

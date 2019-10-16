@@ -69,7 +69,6 @@ function strToHex(ast) {
     //遍历树
     estraverse.replace(ast, {
         enter(node, parent) {
-            console.log('enter: ' + node.type);
             var index;
             debugger
             if (node.type === 'Identifier') {

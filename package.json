@@ -1,6 +1,6 @@
 {
   "name": "glup-enncryption",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "混淆js",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,7 @@
   "devDependencies": {
     "escodegen": "^1.12.0",
     "esprima": "^4.0.1",
+    "glup-enncryption": "^0.0.1",
     "gulp": "^4.0.2",
     "gulp-util": "^3.0.8",
     "preprocess": "^3.1.0",
