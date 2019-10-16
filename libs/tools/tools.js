@@ -16,7 +16,7 @@ function isStrictStatement(statement) {
 }
 
 function isPropertyAccess(node) {
-    return node.type === 'MemberExpression';
+    return node.type === 'MemberExpression' && !node.computed;
 }
 
 function isStringLiteral(node) {
