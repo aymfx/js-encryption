@@ -1,7 +1,10 @@
-(function (_x22687) {
-    var s = 12;
-    function app(arg) {
-        console[_x22687[0]](12199999921, arg);
-    }
-    app(0);
-}.call(this, ['log']));
+var _x58403 = [
+    'log',
+    'xxx'
+];
+console[_x58403[0]](12121);
+var a = 12;
+function app(sss) {
+    console[_x58403[0]](_x58403[1], sss);
+}
+app(sss);

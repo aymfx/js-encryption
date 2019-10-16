@@ -10,9 +10,9 @@ const test = require('./index.js');
 
 
 function testTask() {
-    return src('demo.js')
+    return src('example/demo.js')
         .pipe(test())
-        .pipe(dest('output'));;
+        .pipe(dest('output'));
 }
 
 exports.default = testTask
