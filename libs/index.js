@@ -21,7 +21,8 @@ const {
 } = require('./tools/index.js')
 
 let baseOptions = {
-    uncide: true
+    uncide: true,
+    compress: false
 }
 
 
@@ -29,6 +30,17 @@ let baseOptions = {
 // core
 function strToHex(str, options) {
     options = Object.assign(baseOptions, options)
+    let compress = options.compress ? {
+        format: {
+            indent: {
+                style: '',
+                base: 0,
+                adjustMultilineComment: false
+            },
+            newline: '',
+            space: ''
+        }
+    } : {};
     //
     let ast = esprima.parse(str)
     const stringMapIdentifier = identifier(''); //数组变量
@@ -53,9 +65,14 @@ function strToHex(str, options) {
                 usedVariables[node.name] = true; //获取 所有的标志位 保证不会重复命名
                 return
             } else if (node.type === 'VariableDeclarator') {
-                fnValStringIdentifier[node.id.name] = identifier('_hex' + Date.now());
-                return variableDeclarator(fnValStringIdentifier[node.id.name], node.init)
-
+                if (node.id.name in fnValStringIdentifier) {
+                    return variableDeclarator(fnValStringIdentifier[node.id.name], node.init)
+                } else {
+                    let name = createVariableName(Object.keys(usedVariables))
+                    fnValStringIdentifier[node.id.name] = identifier(name);
+                    usedVariables.push(name) //防止变量重复
+                    return variableDeclarator(fnValStringIdentifier[node.id.name], node.init)
+                }
             } else if (node.type === 'CallExpression') {
                 let {
                     arguments: args,
@@ -86,7 +103,7 @@ function strToHex(str, options) {
     //生成新的树
     ast.body = prependMap(ast.body, stringMapIdentifier, arrayExpression(strings.map(literal)))
 
-    return escodegen.generate(ast).replace(/#x#/g, "\\x").replace(/#u#/g, "\\u")
+    return escodegen.generate(ast, compress).replace(/#x#/g, "\\x").replace(/#u#/g, "\\u")
 }
 
 module.exports = {
