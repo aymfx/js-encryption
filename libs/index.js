@@ -5,10 +5,12 @@ const {
     arrayExpression,
     variableDeclaration,
     memberExpression,
+    assignmentExpression,
     variableDeclarator,
     callExpression,
     literal,
-    identifier
+    identifier,
+    binaryExpression
 } = require('ast-types').builders;
 
 const {
@@ -64,7 +66,7 @@ function strToHex(str, options) {
             if (node.type === 'Identifier') {
                 usedVariables[node.name] = true; //获取 所有的标志位 保证不会重复命名
                 return
-            } else if (node.type === 'VariableDeclarator') {
+            } else if (node.type === 'VariableDeclarator') { //赋值是 改变 变量名字
                 if (node.id.name in fnValStringIdentifier) {
                     return variableDeclarator(fnValStringIdentifier[node.id.name], node.init)
                 } else {
@@ -73,12 +75,46 @@ function strToHex(str, options) {
                     usedVariables.push(name) //防止变量重复
                     return variableDeclarator(fnValStringIdentifier[node.id.name], node.init)
                 }
-            } else if (node.type === 'CallExpression') {
+            } else if (node.type === 'AssignmentExpression') { //赋值时
+                let {
+                    operator,
+                    left,
+                    right
+                } = node
+                if (left.name in fnValStringIdentifier) {
+                    left = fnValStringIdentifier[left.name]
+                }
+
+                if (right.name in fnValStringIdentifier) {
+                    debugger
+                    right = fnValStringIdentifier[right.name]
+                }
+                return assignmentExpression(operator,
+                    left,
+                    right)
+
+            } else if (node.type == 'BinaryExpression') {
+                let {
+                    operator,
+                    left,
+                    right
+                } = node
+                if (left.name in fnValStringIdentifier) {
+                    left = fnValStringIdentifier[left.name]
+                }
+
+                if (right.name in fnValStringIdentifier) {
+                    right = fnValStringIdentifier[right.name]
+                }
+                return binaryExpression(operator,
+                    left,
+                    right)
+            } else if (node.type === 'CallExpression') { //调用时
                 let {
                     arguments: args,
                     callee
                 } = node
-                debugger
+                // debugger
                 let arr = []
                 args.map(item => {
                     if (item.name in fnValStringIdentifier) {
@@ -115,10 +151,9 @@ let code = `console.log(12121)
 var a = 12;
 
 function app(sss) {
-    var a = 19;
+    a = 19+a+a+a+a;
     console.log('xxx', sss, a)
 }
-
 app(a)`
 
 let s = strToHex(code)
