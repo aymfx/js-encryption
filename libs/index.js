@@ -147,14 +147,14 @@ module.exports = {
 }
 
 // ------ test ----------------
-let code = `console.log(12121)
-var a = 12;
+// let code = `console.log(12121)
+// var a = 12;
 
-function app(sss) {
-    a = 19+a+a+a+a;
-    console.log('xxx', sss, a)
-}
-app(a)`
+// function app(sss) {
+//     a = 19+a+a+a+a;
+//     console.log('xxx', sss, a)
+// }
+// app(a)`
 
-let s = strToHex(code)
-console.log(s)
+// let s = strToHex(code)
+// console.log(s)
