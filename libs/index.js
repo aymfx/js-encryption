@@ -24,7 +24,7 @@ const {
 
 let baseOptions = {
     uncide: true,
-    compress: false
+    compress: true
 }
 
 
