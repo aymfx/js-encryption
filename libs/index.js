@@ -10,6 +10,7 @@ const {
     callExpression,
     literal,
     identifier,
+    functionDeclaration,
     binaryExpression
 } = require('ast-types').builders;
 
@@ -61,11 +62,15 @@ function strToHex(str, options) {
     estraverse.replace(ast, {
         enter(node, parent) {
             var index
-            console.log(node, ":", node.type)
-            debugger
+            // console.log(node, ":", node.type)
             if (node.type === 'Identifier') {
+                let {
+                    name
+                } = node
                 usedVariables[node.name] = true; //获取 所有的标志位 保证不会重复命名
-                return
+                if (name in fnValStringIdentifier) {
+                    return identifier(fnValStringIdentifier[name].name)
+                }
             } else if (node.type === 'VariableDeclarator') { //赋值是 改变 变量名字
                 if (node.id.name in fnValStringIdentifier) {
                     return variableDeclarator(fnValStringIdentifier[node.id.name], node.init)
@@ -75,55 +80,6 @@ function strToHex(str, options) {
                     usedVariables.push(name) //防止变量重复
                     return variableDeclarator(fnValStringIdentifier[node.id.name], node.init)
                 }
-            } else if (node.type === 'AssignmentExpression') { //赋值时
-                let {
-                    operator,
-                    left,
-                    right
-                } = node
-                if (left.name in fnValStringIdentifier) {
-                    left = fnValStringIdentifier[left.name]
-                }
-
-                if (right.name in fnValStringIdentifier) {
-                    debugger
-                    right = fnValStringIdentifier[right.name]
-                }
-                return assignmentExpression(operator,
-                    left,
-                    right)
-
-            } else if (node.type == 'BinaryExpression') {
-                let {
-                    operator,
-                    left,
-                    right
-                } = node
-                if (left.name in fnValStringIdentifier) {
-                    left = fnValStringIdentifier[left.name]
-                }
-
-                if (right.name in fnValStringIdentifier) {
-                    right = fnValStringIdentifier[right.name]
-                }
-                return binaryExpression(operator,
-                    left,
-                    right)
-            } else if (node.type === 'CallExpression') { //调用时
-                let {
-                    arguments: args,
-                    callee
-                } = node
-                // debugger
-                let arr = []
-                args.map(item => {
-                    if (item.name in fnValStringIdentifier) {
-                        item = fnValStringIdentifier[item.name]
-                    }
-                    arr.push(item)
-                })
-                return callExpression(callee, arr)
-
             } else if (isStringLiteral(node) && !isPropertyKey(node, parent) && node.value !== 'use strict') {
                 index = addString(node.value);
                 return memberExpression(stringMapIdentifier, literal(index), true);
@@ -145,19 +101,3 @@ function strToHex(str, options) {
 module.exports = {
     strToHex
 }
-
-// ------ test ----------------
-let code = `console.log(1)
-var a = 1;
-
-function a1(a) {
-    var a = a + a + a;
-    console.log('2', a)
-}
-a1(a)`
-console.log(eval(code))
-console.log('---------之前-------------------')
-let s = strToHex(code)
-console.log(s)
-console.log('---------之之后-------------------')
-console.log(eval(s))

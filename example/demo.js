@@ -6,4 +6,3 @@ function a1(a) {
     console.log('2', a)
 }
 a1(a)
-
