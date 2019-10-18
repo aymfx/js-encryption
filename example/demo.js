@@ -1,8 +1,9 @@
-console.log(12121)
-var a = 12;
+console.log(1)
+var a = 1;
 
-function app(sss) {
-    a = 19 + a + a + a + a;
-    console.log('xxx', sss, a)
+function a1(a) {
+    var a = a + a + a;
+    console.log('2', a)
 }
-app(a)
+a1(a)
+

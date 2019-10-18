@@ -22,7 +22,10 @@ module.exports = function (options) {
 
         // 将文件内容转成字符串，并调用 preprocess 组件进行预处理
         // 然后将处理后的字符串，再转成Buffer形式
+        console.log(file.contents.toString())
+        console.log('--------------分割---------------')
         var content = strToHex(file.contents.toString(), options || {})
+        console.log(content)
         file.contents = Buffer.from(content)
         // 下面这两句基本是标配啦，可以参考下 through2 的API
         this.push(file);

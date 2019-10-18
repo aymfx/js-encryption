@@ -61,8 +61,8 @@ function strToHex(str, options) {
     estraverse.replace(ast, {
         enter(node, parent) {
             var index
-            // console.log(node, ":", node.type)
-            // debugger
+            console.log(node, ":", node.type)
+            debugger
             if (node.type === 'Identifier') {
                 usedVariables[node.name] = true; //获取 所有的标志位 保证不会重复命名
                 return
@@ -147,14 +147,17 @@ module.exports = {
 }
 
 // ------ test ----------------
-// let code = `console.log(12121)
-// var a = 12;
+let code = `console.log(1)
+var a = 1;
 
-// function app(sss) {
-//     a = 19+a+a+a+a;
-//     console.log('xxx', sss, a)
-// }
-// app(a)`
-
-// let s = strToHex(code)
-// console.log(s)
+function a1(a) {
+    var a = a + a + a;
+    console.log('2', a)
+}
+a1(a)`
+console.log(eval(code))
+console.log('---------之前-------------------')
+let s = strToHex(code)
+console.log(s)
+console.log('---------之之后-------------------')
+console.log(eval(s))
