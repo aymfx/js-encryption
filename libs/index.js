@@ -99,5 +99,10 @@ function strToHex(str, options) {
 }
 
 module.exports = {
-    strToHex
+    strToHex,
+    strTest
+}
+
+function strTest(str){
+   
 }

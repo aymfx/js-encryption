@@ -1,0 +1,66 @@
+Arguments: 
+  /usr/local/Cellar/node/12.10.0/bin/node /usr/local/bin/yarn add --dev jest
+
+PATH: 
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Apple/bin
+
+Yarn version: 
+  1.17.3
+
+Node version: 
+  12.10.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: EINVAL: invalid argument, unlink '/Volumes/app/2019/mygithub/js-encryption/node_modules/array-last/node_modules/is-number'
+
+npm manifest: 
+  {
+    "name": "glup-enncryption",
+    "version": "0.0.6",
+    "description": "混淆js",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "dev": "gulp"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/aymfx/js-encryption.git"
+    },
+    "keywords": [
+      "Confusion",
+      "Chinese",
+      "Unicode",
+      "Hex",
+      "Encryption"
+    ],
+    "gulpplugin": "",
+    "author": "aymfx",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/aymfx/js-encryption/issues"
+    },
+    "homepage": "https://github.com/aymfx/js-encryption#readme",
+    "devDependencies": {
+      "escodegen": "^1.12.0",
+      "esprima": "^4.0.1",
+      "glup-enncryption": "^0.0.1",
+      "gulp": "^4.0.2",
+      "gulp-util": "^3.0.8",
+      "preprocess": "^3.1.0",
+      "through2": "^3.0.1"
+    },
+    "dependencies": {
+      "esprima": "^4.0.1",
+      "estraverse": "^4.3.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

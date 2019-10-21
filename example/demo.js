@@ -1,8 +1,3 @@
-console.log(1)
-var a = 1;
-
-function a1(a) {
-    var a = a + a + a;
-    console.log('2', a)
+var a = {
+    b: '2'
 }
-a1(a)
