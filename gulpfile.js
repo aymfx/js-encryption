@@ -10,7 +10,7 @@ const {
 const test = require('./app.js');
 
 function testTask() {
-    return src('example/demo.js')
+    return src('example/*.js')
         .pipe(test())
         .pipe(dest('output'));
 }

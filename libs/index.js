@@ -1,6 +1,8 @@
 const esprima = require('esprima'); //解析js的语法的包
 const estraverse = require('estraverse'); //遍历树的包
 const escodegen = require('escodegen'); //生成新的树的包
+const gutil = require('gulp-util'); //按照gulp的统一规范打印错误日志
+const PLUGIN_NAME = 'glup-enncryption'
 const {
     arrayExpression,
     variableDeclaration,
@@ -20,15 +22,14 @@ const {
     isPropertyAccess,
     isStringLiteral,
     isPropertyKey,
-    stringToHex
+    stringToHex,
+    isStrictStatement
 } = require('./tools/index.js')
 
 let baseOptions = {
     uncide: true,
     compress: true
 }
-
-
 
 // core
 function strToHex(str, options) {
@@ -58,11 +59,16 @@ function strToHex(str, options) {
         }
         return stringIndexes[string];
     }
+    //必须是严格模式
+    if (!isStrictStatement(ast.body[0])) {
+        gutil.log(PLUGIN_NAME, ':', gutil.colors.red('必须是严格模式下的js文件，不然会有问题'));
+    }
     //遍历树
     estraverse.replace(ast, {
         enter(node, parent) {
             var index
-            // console.log(node, ":", node.type)
+            // console.log(node.type)
+            debugger
             if (node.type === 'Identifier') {
                 let {
                     name
@@ -81,6 +87,7 @@ function strToHex(str, options) {
                     return variableDeclarator(fnValStringIdentifier[node.id.name], node.init)
                 }
             } else if (isStringLiteral(node) && !isPropertyKey(node, parent) && node.value !== 'use strict') {
+
                 index = addString(node.value);
                 return memberExpression(stringMapIdentifier, literal(index), true);
             } else if (isPropertyAccess(node)) { //MemberExpression
@@ -99,10 +106,16 @@ function strToHex(str, options) {
 }
 
 module.exports = {
-    strToHex,
-    strTest
+    strToHex
 }
 
-function strTest(str){
-   
-}
+// code =
+//     `a = '121';
+// console.log(a)`
+
+// console.log(eval(code))
+// console.log('-------------dev----------')
+// let json = strToHex(code)
+// console.log(json)
+// console.log('-------------dev----------')
+// console.log(eval(json))

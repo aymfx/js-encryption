@@ -4,7 +4,7 @@ const through = require('through2'); //Node Stream的简单封装，目的是让
 const {
     strToHex
 } = require('./libs/index.js')
-
+const PLUGIN_NAME = 'glup-enncryption'
 module.exports = function (options) {
     return through.obj(function (file, enc, cb) {
 
