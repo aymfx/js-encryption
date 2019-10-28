@@ -67,9 +67,10 @@ function strToHex(str, options) {
     estraverse.replace(ast, {
         enter(node, parent) {
             var index
-            // console.log(node.type)
-            debugger
+            // console.log(node)
+            // debugger
             if (node.type === 'Identifier') {
+                // debugger
                 let {
                     name
                 } = node
@@ -77,6 +78,7 @@ function strToHex(str, options) {
                 if (name in fnValStringIdentifier) {
                     return identifier(fnValStringIdentifier[name].name)
                 }
+
             } else if (node.type === 'VariableDeclarator') { //赋值是 改变 变量名字
                 if (node.id.name in fnValStringIdentifier) {
                     return variableDeclarator(fnValStringIdentifier[node.id.name], node.init)
@@ -87,7 +89,6 @@ function strToHex(str, options) {
                     return variableDeclarator(fnValStringIdentifier[node.id.name], node.init)
                 }
             } else if (isStringLiteral(node) && !isPropertyKey(node, parent) && node.value !== 'use strict') {
-
                 index = addString(node.value);
                 return memberExpression(stringMapIdentifier, literal(index), true);
             } else if (isPropertyAccess(node)) { //MemberExpression
@@ -108,14 +109,3 @@ function strToHex(str, options) {
 module.exports = {
     strToHex
 }
-
-// code =
-//     `a = '121';
-// console.log(a)`
-
-// console.log(eval(code))
-// console.log('-------------dev----------')
-// let json = strToHex(code)
-// console.log(json)
-// console.log('-------------dev----------')
-// console.log(eval(json))
