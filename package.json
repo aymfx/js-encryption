@@ -16,7 +16,9 @@
     "Chinese",
     "Unicode",
     "Hex",
-    "Encryption"
+    "Encryption",
+    "加密",
+    "混淆"
   ],
   "gulpplugin": "",
   "author": "aymfx",
@@ -26,16 +28,15 @@
   },
   "homepage": "https://github.com/aymfx/js-encryption#readme",
   "devDependencies": {
-    "escodegen": "^1.12.0",
-    "esprima": "^4.0.1",
-    "glup-enncryption": "^0.0.1",
     "gulp": "^4.0.2",
-    "gulp-util": "^3.0.8",
-    "preprocess": "^3.1.0",
-    "through2": "^3.0.1"
   },
   "dependencies": {
     "esprima": "^4.0.1",
-    "estraverse": "^4.3.0"
+    "estraverse": "^4.3.0",
+    "escodegen": "^1.12.0",
+    "glup-enncryption": "^0.0.1",
+    "gulp-util": "^3.0.8",
+    "preprocess": "^3.1.0",
+    "through2": "^3.0.1"
   }
 }
