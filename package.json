@@ -1,6 +1,6 @@
 {
   "name": "glup-enncryption",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "混淆js",
   "main": "index.js",
   "scripts": {
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/aymfx/js-encryption#readme",
   "devDependencies": {
-    "gulp": "^4.0.2",
+    "gulp": "^4.0.2"
   },
   "dependencies": {
     "esprima": "^4.0.1",
