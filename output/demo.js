@@ -1,1 +1,0 @@
-'use strict';var _x64616=['\x6c\x6f\x67'];a=12;console[_x64616[0]](a);
