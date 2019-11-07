@@ -6,9 +6,24 @@
     "test": "jest",
     "npm": "npm version patch && git push --follow-tags && npm publish"
   },
+  "keywords": [
+    "Confusion",
+    "Chinese",
+    "Unicode",
+    "webpack",
+    "loader",
+    "Hex",
+    "Encryption",
+    "加密",
+    "混淆"
+  ],
   "repository": "git@github.com:aymfx/js-encryption.git",
   "author": "aymfx <1095731371@qq.com>",
-  "license": "MIT",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aymfx/js-encryption/issues"
+  },
+  "homepage": "https://github.com/aymfx/js-encryption#readme",
   "devDependencies": {
     "@babel/cli": "^7.7.0",
     "@babel/core": "^7.7.2",
